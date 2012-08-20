@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #interactive =
 
 device=$2
@@ -51,20 +51,26 @@ eval set -- $args
                         ;;
           u )UPLOAD
 			;;
-           *) echo $OPTARG is an unrecognized option; exit ;;
+           *) echo $OPTARG is an unrecognized option;
+              help; exit ;;
         esac
     done
 if [ $2 = "" ]
- echo "Build for what device?"
-  read device
+ then
+  echo "Build for what device?"
+   read device
+fi
 
 echo "Removing older builds from today"
  find . -name *${date}\* -exec echo "removing previous" {} \; -exec rm {} \;
 
-if [upload = "" ]
-echo "Do you want to upload this build to Goo?"
- read upload
-    if [ $upload = yes ]
+if [ upload = "" ]
+ then
+  echo "Do you want to upload this build to Goo?"
+   read upload
+fi
+
+if [ $upload = yes ]
 	then
 	   echo "I will upload this to Goo.im"
     else
@@ -78,5 +84,6 @@ if [ $upload=yes ]
    then
 	find . -name *${date}\*.zip -printf %p\\n -exec rsync -v -e ssh {} goo.im:public_html/ROMS \;
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
-   elif [ $upload != yes ]
+   else [ $upload != yes ]
     echo "Build complete and NOT uploaded."
+fi

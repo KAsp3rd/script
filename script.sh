@@ -1,6 +1,5 @@
 #!/bin/bash
 #interactive =
-#http://www.linuxquestions.org/questions/linux-newbie-8/bash-script-for-each-command-line-argument-429058/
 
 DEVICE=$2
 

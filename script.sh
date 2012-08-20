@@ -1,9 +1,7 @@
 #!/bin/bash
 #interactive =
-#More work to come to make interactive
+
 device=$2
-date=`date +"%b-%d-%y"`
-echo $date
 
 function help(){
 	 echo "usage: ./script.sh <options> <device>
@@ -40,7 +38,7 @@ eval set -- $args
   while getopts ":hsclu?" option 2>/dev/null
    do
    case $option in
-	  h )	        help
+	  h )	help
 			exit
 			;;
           s )           sync
@@ -63,8 +61,8 @@ eval set -- $args
 # echo "d2tmo"
 #fi
 
-echo "Removing older builds from today"
- find . -name *${date}\* -exec echo "removing previous" {} \; -exec rm {} \;
+echo "Removing older builds"
+ find . -name *${device}_\*.zip* -exec echo "removing previous" {} \; -exec rm {} \;
 
 #if [ $upload = "" ]
 # then
@@ -72,7 +70,7 @@ echo "Removing older builds from today"
 #   read upload
 #fi
 
-#if [ $upload ="yes" ]
+#if [ $upload = yes ]
 #	then
 #	   echo "I will upload this to Goo.im"
 #    else
@@ -84,7 +82,7 @@ echo "brunch" $device
 
 if [ $upload="yes" ]
    then
-	find . -name *${date}\*.zip -printf %p\\n -exec rsync -v -e ssh {} goo.im:public_html/ROMS \;
+	find . -name *${device}_\*.zip -printf %p\\n -exec rsync -v -e ssh {} goo.im:public_html/ROMS \;
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
    else [ $upload !="yes" ]
     echo "Build complete and NOT uploaded."

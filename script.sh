@@ -20,7 +20,7 @@ function clobber(){
         make clobber
 }
 function UPLOAD(){
-	upload="yes"
+	upload=yes
 }
 
 . build/envsetup.sh
@@ -40,16 +40,16 @@ eval set -- $args
   while getopts ":hsclu?" option 2>/dev/null
    do
    case $option in
-	  h )	help
+	  h )	        help
 			exit
 			;;
           s )           sync
                         ;;
           c )           clobber
                         ;;
-	  l ) clean
+	  l )           clean
                         ;;
-          u )UPLOAD
+          u )           UPLOAD
 			;;
            *) echo $OPTARG is an unrecognized option;
               help; exit ;;
@@ -72,7 +72,7 @@ echo "Removing older builds from today"
 #   read upload
 #fi
 
-#if [ $upload = "yes" ]
+#if [ $upload ="yes" ]
 #	then
 #	   echo "I will upload this to Goo.im"
 #    else
@@ -82,10 +82,10 @@ echo "Removing older builds from today"
 echo "brunch" $device
   brunch $device
 
-if [ $upload= "yes" ]
+if [ $upload="yes" ]
    then
 	find . -name *${date}\*.zip -printf %p\\n -exec rsync -v -e ssh {} goo.im:public_html/ROMS \;
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
-   else [ $upload != "yes" ]
+   else [ $upload !="yes" ]
     echo "Build complete and NOT uploaded."
 fi

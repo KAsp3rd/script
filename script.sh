@@ -82,10 +82,10 @@ echo "Removing older builds from today"
 echo "brunch" $device
   brunch $device
 
-if [ $upload= "yes" ]
+if [ $upload= yes ]
    then
 	find . -name *${date}\*.zip -printf %p\\n -exec rsync -v -e ssh {} goo.im:public_html/ROMS \;
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
-   else [ $upload != "yes" ]
+   else [ $upload != yes ]
     echo "Build complete and NOT uploaded."
 fi

@@ -1,74 +1,66 @@
 #!/bin/bash
 #interactive =
 
-DEVICE=$2
-
+device=$2
 date=`date +"%b-%d-%y"`
 echo $date
 
 function help(){
-	 echo "usage:  s = sync c = clobber l = clean u = upload
-while no options will run interactive"
+	 echo "usage: ./script.sh <options> <device>
+	 options: s = sync c = clobber l = clean u = upload
+         while no options will run interactive"
 }
-
 function clean(){
 	make clean
 }
-
 function sync(){
 	repo sync
 }
-
 function clobber(){
         make clobber
 }
-
 function UPLOAD(){
 	upload=yes
 }
 
-if [$1 != "" ]
-then
 . build/envsetup.sh
-while getopts ":h:s:c:l:u:?" Option
-do
-	case $Option in
 
+if [ $# != 0 ]
+    then
+	while getopts ":hsclu?" Option
+	 do
+	case $Option in
 	  h | ?  )	help
 			exit
 			;;
-          s  )
-                        sync
+          s )           sync
                         ;;
-          c  )
-                        clobber
+          c )           clobber
                         ;;
-	  l | --clean )
-			clean
+	  l | --clean ) clean
                         ;;
-          u | --upload )
-			UPLOAD
+          u | --upload )UPLOAD
 			;;
-                    *) echo "error"
+                    *) echo "invalid input"
+		       help
         esac
-shift $(($OPTIND - 1))
-done
-
+      shift $(($OPTIND - 1))
+    done
 else
-echo "Build for what device?"
+ echo "Build for what device?"
   read device
-   find . -name *${date}\* -exec echo 'removing previous' {} \; -exec  rm {} \;
+fi
+   find . -name *${date}\* -exec echo "removing previous" {} \; -exec rm {} \;
 
 echo "Do you want to upload this build to Goo?"
-  read upload
+ read upload
     if [ $upload = yes ]
-	then echo "I will upload this to Goo.im"
-    elif [ $upload = no ]
-	then echo "I will not upload this to Goo.im"
-    fi
-fi
-
-echo "brunch" $2
+	then
+	   echo "I will upload this to Goo.im"
+    else
+	echo "I will not upload this to Goo.im"
+     fi
+echo "brunch" $device
   brunch $device
 
 if [ $upload=yes ]

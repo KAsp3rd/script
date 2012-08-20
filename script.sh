@@ -20,38 +20,48 @@ function clobber(){
         make clobber
 }
 function UPLOAD(){
-	upload=yes
+	upload="yes"
 }
 
 . build/envsetup.sh
 
-if [ $# != 0 ]
-    then
-	while getopts ":hsclu?" Option
-	 do
-	case $Option in
-	  h | ?  )	help
+for arg
+do
+  delim=""
+  case "$arg" in
+  #change long options to short options... will fix later
+           --help) args="${args}-h ";;
+       *) [[ "${arg:0:1}" == "-" ]] || delim="\""
+           args="${args}${delim}${arg}${delim} ";;
+  esac
+done
+#reset params for short opts
+eval set -- $args
+  while getopts ":hsclu?" option 2>/dev/null
+   do
+   case $option in
+	  h )	help
 			exit
 			;;
           s )           sync
                         ;;
           c )           clobber
                         ;;
-	  l | --clean ) clean
+	  l ) clean
                         ;;
-          u | --upload )UPLOAD
+          u )UPLOAD
 			;;
-                    *) echo "invalid input"
-		       help
+           *) echo $OPTARG is an unrecognized option; exit ;;
         esac
-      shift $(($OPTIND - 1))
     done
-else
+if [ $2 = "" ]
  echo "Build for what device?"
   read device
-fi
-   find . -name *${date}\* -exec echo "removing previous" {} \; -exec rm {} \;
 
+echo "Removing older builds from today"
+ find . -name *${date}\* -exec echo "removing previous" {} \; -exec rm {} \;
+
+if [upload = "" ]
 echo "Do you want to upload this build to Goo?"
  read upload
     if [ $upload = yes ]
@@ -60,6 +70,7 @@ echo "Do you want to upload this build to Goo?"
     else
 	echo "I will not upload this to Goo.im"
      fi
+
 echo "brunch" $device
   brunch $device
 
@@ -68,5 +79,4 @@ if [ $upload=yes ]
 	find . -name *${date}\*.zip -printf %p\\n -exec rsync -v -e ssh {} goo.im:public_html/ROMS \;
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
    elif [ $upload != yes ]
-    echo "Build complete and not uploaded. FAILED"
-fi
+    echo "Build complete and NOT uploaded."

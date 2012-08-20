@@ -1,6 +1,6 @@
-#!/bin/bash -x
+#!/bin/bash
 #interactive =
-
+#More work to come to make interactive
 device=$2
 date=`date +"%b-%d-%y"`
 echo $date
@@ -55,35 +55,37 @@ eval set -- $args
               help; exit ;;
         esac
     done
-if [ $2 = "" ]
- then
-  echo "Build for what device?"
-   read device
-fi
+#if [ $device =  ]
+# then
+#  echo "Build for what device?"
+#   read device
+#else
+# echo "d2tmo"
+#fi
 
 echo "Removing older builds from today"
  find . -name *${date}\* -exec echo "removing previous" {} \; -exec rm {} \;
 
-if [ upload = "" ]
- then
-  echo "Do you want to upload this build to Goo?"
-   read upload
-fi
+#if [ $upload = "" ]
+# then
+#  echo "Do you want to upload this build to Goo?"
+#   read upload
+#fi
 
-if [ $upload = yes ]
-	then
-	   echo "I will upload this to Goo.im"
-    else
-	echo "I will not upload this to Goo.im"
-     fi
+#if [ $upload = "yes" ]
+#	then
+#	   echo "I will upload this to Goo.im"
+#    else
+#	echo "I will not upload this to Goo.im"
+#     fi
 
 echo "brunch" $device
   brunch $device
 
-if [ $upload=yes ]
+if [ $upload= "yes" ]
    then
 	find . -name *${date}\*.zip -printf %p\\n -exec rsync -v -e ssh {} goo.im:public_html/ROMS \;
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
-   else [ $upload != yes ]
+   else [ $upload != "yes" ]
     echo "Build complete and NOT uploaded."
 fi

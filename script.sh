@@ -1,6 +1,8 @@
 #!/bin/bash
 #interactive =
 
+export USE_CCACHE=1
+
 device=$2
 
 function help(){
@@ -20,8 +22,13 @@ function clobber(){
 function UPLOAD(){
 	upload=yes
 }
-
-. build/envsetup.sh
+if [ "$1" == "" ]
+  then
+   help
+   exit
+ else
+ . build/envsetup.sh
+fi
 
 for arg
 do

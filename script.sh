@@ -7,7 +7,7 @@ device=$2
 
 function help(){
 	 echo "usage: ./script.sh [options] <device>
-	 options: s = sync c = clobber l = clean u = upload -b = build
+	 options: s = sync c = clobber l = clean u = upload -b = build -i = interactive
          example: ./script.sh -scu d2tmo"
 }
 function clean(){
@@ -76,8 +76,8 @@ else
  echo $device
 fi
 
-#echo "Removing older builds"
-# find . -name *${device}_\*.zip* -exec echo "removing previous" {} \; -exec rm {} \;
+echo "Removing older builds"
+ find . -name *${device}_\*.zip* -exec echo "removing previous" {} \; -exec rm {} \;
 
 if [ "$upload" = "" ]
  then
@@ -99,6 +99,6 @@ if [ "$upload"= "yes" ]
    then
 	find . -name *${device}_\*.zip -printf %p\\n -exec rsync -v -e ssh {} goo.im:public_html/ROMS \;
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
-   else [ "$upload" !="yes" ]
+   else [ "$upload" != "yes" ]
     echo "Build complete and NOT uploaded."
 fi

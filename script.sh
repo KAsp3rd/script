@@ -6,9 +6,9 @@ export USE_CCACHE=1
 device=$2
 
 function help(){
-	 echo "usage: ./script.sh [options] <device>
+	 echo "usage: $0 [options] <device>
 	 options: s = sync c = clobber l = clean u = upload -b = build -i = interactive
-         example: ./script.sh -scu d2tmo"
+         example: $0 -scu d2tmo"
 }
 function clean(){
 	make clean

@@ -79,7 +79,7 @@ fi
 echo "Removing older builds"
  find . -name *${device}_\*.zip* -exec echo "removing previous" {} \; -exec rm {} \;
 
-if [ "$upload" = "" ]
+if [ "$upload" == "" ]
  then
   echo "Do you want to upload this build to Goo?"
    read upload
@@ -95,7 +95,7 @@ if [ "$upload" = "yes" ]
 echo "brunch" $device
   brunch $device
 
-if [ "$upload"= "yes" ]
+if [ "$upload" = "yes" ]
    then
 	find . -name *${device}_\*.zip -printf %p\\n -exec rsync -v -e ssh {} goo.im:public_html/ROMS \;
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"

@@ -1,3 +1,13 @@
 This thing can possibly change at anytime...
 
-big thanks to Pier (https://github.com/PierPP) Hillbillyhacker (https://github.com/hillbillyhacker86) and any others that I have forgotten. 
+big thanks to 
+Pier (https://github.com/PierPP) 
+Hillbillyhacker (https://github.com/hillbillyhacker86)
+gdanko (https://github.com/gdanko)
+and any others that I have forgotten. 
+
+
+This script is designed to use a simple command with arguements to build Android.
+
+With minor changes this can be used by anyone for any AOSP project.
+

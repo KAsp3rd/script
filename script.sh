@@ -6,9 +6,9 @@ export USE_CCACHE=1
 device=$2
 
 function help(){
-	 echo "usage: ./script.sh [options] <device>
+	 echo "usage: $0 [options] <device>
 	 options: s = sync c = clobber l = clean u = upload b: <device> = build for <device>
-         example: ./script.sh -scu d2tmo"
+         example: $0 -scu d2tmo"
 }
 function clean(){
         lunch aokp_${device}-userdebug
@@ -83,6 +83,9 @@ if [ "$upload" = "yes" ]
     else
 	echo "I will not upload this to Goo.im"
      fi
+
+echo "bacon" $device
+    lunch aokp_${device}-userdebug && time mka bacon -j16
 
 if [ "$upload" = "yes" ]
    then

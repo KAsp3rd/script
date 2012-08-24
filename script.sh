@@ -90,7 +90,7 @@ echo "bacon" $device
 if [ "$upload" = "yes" ]
    then
 	find . -name *${device}_\*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \;
-             wget -q -O /dev/null -U="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:14.0) Gecko/20100101 Firefox/14.0.1" http://goo.im/update_index
+             echo "refreshing goo.im index"; wget -q http://goo.im/update_index
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
    else [ "$upload" != "yes" ]
     echo "Build complete and NOT uploaded."

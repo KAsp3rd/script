@@ -3,12 +3,13 @@
 
 export USE_CCACHE=1
 
-device=$2
+for i in $@; do :; done
+device=$i
 
 function help(){
 	 echo "usage: $0 [options] <device>
 	 options: s = sync c = clobber l = clean u = upload b: <device> = build for <device>
-         example: $0 -scu d2tmo"
+         example: $0 -scu d2tmo toro maguro"
 }
 function clean(){
         lunch aokp_${device}-userdebug

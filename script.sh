@@ -24,11 +24,11 @@ function clobber(){
 }
 function build(){
          find . -name *${device}_\*.zip* -exec echo "removing previous" {} \; -exec rm {} \;
-         echo "bacon" $device
-          brunch $device
+         echo "building $device"
+          time brunch $device
 }
 function UPLOAD(){
-	find . -name *aokp_\*jb*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \;
+	time find . -name *aokp_\*jb*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \;
              echo "refreshing goo.im index"; wget -q http://goo.im/update_index
              echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
 }

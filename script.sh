@@ -28,9 +28,7 @@ function build(){
           time brunch $device
 }
 function UPLOAD(){
-	time find . -name *aokp_\*jb*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \;
-             echo "refreshing goo.im index"; wget -q http://goo.im/update_index
-             echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
+         upload=1
 }
 if [ "$1" == "" ]
   then
@@ -66,10 +64,10 @@ eval set -- $args
                         ;;
 	  l )           clean
                         ;;
+          b)            build
+                        ;;
           u )           UPLOAD
 			;;
-	  b)            build
-                        ;;
           :)            echo "Option -$OPTARG requires an argument."
                         help
                         exit
@@ -80,3 +78,9 @@ eval set -- $args
                         ;;
         esac
     done
+
+if [ $upload == "1" ]
+  time find . -name *aokp_\*jb*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ $
+   echo "refreshing goo.im index"; wget -q http://goo.im/update_index
+   echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
+

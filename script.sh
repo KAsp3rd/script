@@ -1,6 +1,6 @@
 #!/bin/bash
-#interactive =
 
+BUILD_DIR=/home/$USER/aokp
 export USE_CCACHE=1
 
 for i in $@; do :; done
@@ -13,23 +13,29 @@ function help(){
 }
 function clean(){
         lunch aokp_${device}-userdebug
-	make clean
+	mka clean
 }
 function sync(){
-	repo sync
+	repo sync -j4
 }
 function clobber(){
         lunch aokp_${device}-userdebug
-        make clobber
+        mka clobber
+}
+function build(){
+         find . -name *${device}_\*.zip* -exec echo "removing previous" {} \; -exec rm {} \;
+         echo "building $device"
+          time brunch $device
 }
 function UPLOAD(){
-	upload=yes
+         upload=1
 }
 if [ "$1" == "" ]
   then
    help
    exit
  else
+ cd $BUILD_DIR
  . build/envsetup.sh
 fi
 
@@ -46,7 +52,7 @@ do
 done
 #reset params for short opts
 eval set -- $args
-  while getopts ":hsclub:?" option 2>/dev/null
+  while getopts ":hsclb:u?" option 2>/dev/null
    do
    case $option in
 	  h )	help
@@ -58,10 +64,10 @@ eval set -- $args
                         ;;
 	  l )           clean
                         ;;
+          b)            build
+                        ;;
           u )           UPLOAD
 			;;
-	  b)            build
-                        ;;
           :)            echo "Option -$OPTARG requires an argument."
                         help
                         exit
@@ -73,26 +79,8 @@ eval set -- $args
         esac
     done
 
-
-echo "Removing older builds"
- find . -name *${device}_\*.zip* -exec echo "removing previous" {} \; -exec rm {} \;
-
-
-if [ "$upload" = "yes" ]
-	then
-        echo "I will upload this to Goo.im"
-    else
-	echo "I will not upload this to Goo.im"
-     fi
-
-echo "bacon" $device
-    lunch aokp_${device}-userdebug && time mka bacon -j16
-
-if [ "$upload" = "yes" ]
-   then
-	find . -name *${device}_\*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \;
-             echo "refreshing goo.im index"; wget -q http://goo.im/update_index
-             echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
-   else [ "$upload" != "yes" ]
-    echo "Build complete and NOT uploaded."
+if [ $upload == "1" ]; then
+  time find . -name *aokp_\*jb*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ $
+   echo "refreshing goo.im index"; wget -q http://goo.im/update_index
+   echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
 fi

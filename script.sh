@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 BUILD_DIR=/home/$USER/aokp
 export USE_CCACHE=1
@@ -12,15 +12,15 @@ if [ "$1" == "" ]
  . build/envsetup.sh
 fi
 
-for i in $@
- do
+for i in "${@:2}"
+do
 device=$i
 #reset upload to 0 until the last device is built
 upload=0
 
 function help(){
-	 echo "usage: $0 [options] <device>
-	 options: s = sync c = clobber l = clean u = upload b: <device> = build only for <device>
+	 echo "usage: $0 [options] <device> <device>
+	 options: s = sync c = clobber l = clean u = upload b= build only for <device>
          example: $0 -scu d2tmo toro maguro"
 }
 function clean(){
@@ -43,20 +43,20 @@ function UPLOAD(){
          upload=1
 }
 
-for arg
+for arg in $1
  do
   delim=""
   case "$arg" in
   #change long options to short options... will fix later
            --help) args="${args}-h ";;
-           --build) args="${args}-o";;
+           --build) args="${args}-b ";;
        *) [[ "${arg:0:1}" == "-" ]] || delim="\""
            args="${args}${delim}${arg}${delim} ";;
   esac
 done
 #reset params for short opts
 eval set -- $args
-  while getopts ":hsclb:u?" option 2>/dev/null
+  while getopts ":hsclbu?" option 2>/dev/null
    do
    case $option in
 	  h )	help
@@ -68,7 +68,7 @@ eval set -- $args
                         ;;
 	  l )           clean
                         ;;
-          b )            build
+          b )           build
                         ;;
           u )           UPLOAD
 			;;
@@ -81,8 +81,9 @@ eval set -- $args
                         exit
                         ;;
         esac
-    done
-  done
+      done
+   done
+shift
 if [ $upload == "1" ]; then
   time find . -name *aokp_\*jb*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \;
    echo "refreshing goo.im index"; wget -q http://goo.im/update_index

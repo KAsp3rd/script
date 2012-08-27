@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 BUILD_DIR=/home/$USER/aokp
 export USE_CCACHE=1

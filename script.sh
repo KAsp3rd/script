@@ -28,10 +28,10 @@ function clean(){
 	make clean
 }
 function sync(){
-      if [ $sync = "0" ]
+      if [ $sy = "0" ]; then
 	repo sync
 #set sync to 1 so it will only run repo sync once if more then one device is being parsed
-        sync = 1
+        sy=1
 }
 function clobber(){
         lunch aokp_${device}-userdebug

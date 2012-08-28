@@ -28,7 +28,7 @@ function clean(){
 	make clean
 }
 function sync(){
-      if [ $sy = "0" ]; then
+      if [ $sy == "0" ]; then
 	repo sync
 #set sync to 1 so it will only run repo sync once if more then one device is being parsed
         sy=1

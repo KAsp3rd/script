@@ -25,14 +25,17 @@ function help(){
 }
 function clean(){
         lunch aokp_${device}-userdebug
-	mka clean
+	make clean
 }
 function sync(){
+      if [ $sync = "0" ]
 	repo sync
+#set sync to 1 so it will only run repo sync once if more then one device is being parsed
+        sync = 1
 }
 function clobber(){
         lunch aokp_${device}-userdebug
-        mka clobber
+        make clobber
 }
 function build(){
          find . -name *${device}_\*.zip* -exec echo "removing previous" {} \; -exec rm {} \;

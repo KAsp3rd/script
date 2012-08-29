@@ -11,6 +11,7 @@ if [ "$1" == "" ]
  cd $BUILD_DIR
  . build/envsetup.sh
 fi
+sy=1
 
 for i in "${@:2}"
 do
@@ -28,10 +29,10 @@ function clean(){
 	make clean
 }
 function sync(){
-      if [ $sy == "0" ]; then
+      if [ $sy == "1" ]; then
 	repo sync
 #set sync to 1 so it will only run repo sync once if more then one device is being parsed
-        sy=1
+        sy=0
       fi
 }
 function clobber(){

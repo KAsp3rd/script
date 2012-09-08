@@ -33,7 +33,7 @@ function clean(){
 function sync(){
       if [ $sy == "1" ]; then
 	repo sync
-#set sync to 1 so it will only run repo sync once if more then one device is being parsed
+#set sync to 0 so it will only run repo sync once if more then one device is being parsed
         sy=0
       fi
 }
@@ -92,7 +92,4 @@ eval set -- $args
    done
 shift
 if [ $upload == "1" ]; then
-  time find . -name *aokp_\*jb*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \;
-   echo "refreshing goo.im index"; wget -q http://goo.im/update_index
-   echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
-fi
+  time find . -name *aokp_\*${DATE}*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \; echo "refreshing goo.im index"; wget -q http://goo.im/update_index echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd" fi

@@ -92,4 +92,8 @@ eval set -- $args
    done
 shift
 if [ $upload == "1" ]; then
-  time find . -name *aokp_\*${DATE}*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \; echo "refreshing goo.im index"; wget -q http://goo.im/update_index echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd" fi
+  time find . -name *aokp_\*${DATE}*.zip -printf %p\\n -exec scp {} goo.im:public_html/ROMS/ \; 
+echo "refreshing goo.im index"; wget -q http://goo.im/update_index 
+rm update_*
+echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd" 
+fi

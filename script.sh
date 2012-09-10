@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BUILD_DIR=/home/$USER/aokp
+DATE=$(date +%h-%d-%y)
 export USE_CCACHE=1
 export CCACHE_COMPILERCHECK=none
 #exporting for use of newer ccache. Default on 2.4 is none, Default on 3.* is mtime

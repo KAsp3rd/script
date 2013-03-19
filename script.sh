@@ -6,7 +6,23 @@ export USE_CCACHE=1
 export CCACHE_COMPILERCHECK=none
 #exporting for use of newer ccache. Default on 2.4 is none, Default on 3.* is mtime
 
-function fbgt(){
+if [ "$1" == "" ]
+  then
+   help
+   exit
+ else
+ cd $BUILD_DIR
+ . build/envsetup.sh
+fi
+sy=1
+
+for i in "${@:2}"
+do
+device=$i
+#reset upload to 0 until the last device is built
+upload=0
+
+function help(){
 	 echo "usage: $0 [options] <device> <device>
 	 options: s = sync c = clobber l = clean u = upload b= build only for <device>
          example: $0 -scu d2tmo toro maguro"
@@ -35,28 +51,12 @@ function UPLOAD(){
          upload=1
 }
 
-if [ "$1" == "" ]
-  then
-   fbgt
-   exit
- else
- cd $BUILD_DIR
- . build/envsetup.sh
-fi
-sy=1
-
-for i in "${@:2}"
-do
-device=$i
-#reset upload to 0 until the last device is built
-upload=0
-
 for arg in $1
  do
   delim=""
   case "$arg" in
   #change long options to short options... will fix later
-           --fbgt) args="${args}-h ";;
+           --help) args="${args}-h ";;
            --build) args="${args}-b ";;
        *) [[ "${arg:0:1}" == "-" ]] || delim="\""
            args="${args}${delim}${arg}${delim} ";;
@@ -67,7 +67,7 @@ eval set -- $args
   while getopts ":hsclbu?" option 2>/dev/null
    do
    case $option in
-	  h )	fbgt
+	  h )	help
 			exit
 			;;
           s )           sync
@@ -81,20 +81,20 @@ eval set -- $args
           u )           UPLOAD
 			;;
           :)            echo "Option -$OPTARG requires an argument."
-                        fbgt
+                        help
                         exit
                         ;;
            *)           echo $OPTARG is an unrecognized option;
-                        fbgt;
+                        help;
                         exit
                         ;;
         esac
       done
    done
 shift
-if [ "$upload" = "1" ]; then
-  time find . -name *aokp_\*unofficial*.zip -printf %p\\n -exec scp {} goo.im:public_html/testing/ \;
-echo "refreshing goo.im index"; wget -q http://goo.im/update_index
+if [ $upload == "1" ]; then
+  time find . -name *aokp_\*unofficial*.zip -printf %p\\n -exec scp {} goo.im:public_html/testing/ \; 
+echo "refreshing goo.im index"; wget -q http://goo.im/update_index 
 rm update_*
-echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd"
+echo "Build and upload Complete. Download from goo.im/devs/KAsp3rd" 
 fi
